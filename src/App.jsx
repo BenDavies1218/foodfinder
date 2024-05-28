@@ -2,7 +2,7 @@ import { Route, Routes } from "react-router-dom";
 // import Template from "./pages/_TemplatePage";
 // import HomePage from "./pages/Homepage";
 import SearchPage from "./pages/SearchPage";
-// import FavouritesPage from "./pages/FavouritesPage";
+import FavouritesPage from "./pages/FavouritesPage";
 import "./App.css";
 
 function App() {
@@ -15,7 +15,7 @@ function App() {
         {/* <Route path="/" element={<Template />} /> */}
         {/* <Route index element={<HomePage />} /> */}
         <Route path="/search" element={<SearchPage />} />
-        {/* <Route path="/favourites" element={<FavouritesPage />} /> */}
+        <Route path="/favourites" element={<FavouritesPage />} />
       </Routes>
     </>
   );
