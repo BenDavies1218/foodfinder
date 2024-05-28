@@ -1,3 +1,4 @@
+
 import { useEffect } from "react";
 import fetchMapData from "../functions/fetchMapData";
 import "maplibre-gl/dist/maplibre-gl.css";
@@ -11,7 +12,8 @@ export default function SearchPage() {
   return (
     <>
       <h1>Hello from the Search page</h1>
-      <div id="map"></div>
+      <div id="my-map"></div>
     </>
   );
 }
+
