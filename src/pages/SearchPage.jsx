@@ -1,3 +1,4 @@
+
 import { useEffect } from "react";
 import fetchMapData from "../functions/fetchMapData";
 import "maplibre-gl/dist/maplibre-gl.css";
@@ -15,3 +16,4 @@ export default function SearchPage() {
     </>
   );
 }
+
