@@ -11,7 +11,7 @@ export default function SearchPage() {
   return (
     <>
       <h1>Hello from the Search page</h1>
-      <div id="map"></div>
+      <div id="my-map"></div>
     </>
   );
 }

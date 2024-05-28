@@ -65,19 +65,23 @@ export default function fetchMapData() {
       });
   });
 
+
   // ADDING THE POPUP ON THE ICON
   function showGeoJSONPoints(geojson, id) {
+    
     // CLEARING ALL THE LAYERS BEFORE
     if (map.getSource(id)) {
       map.removeLayer(layerId);
       map.removeSource(id);
     }
 
+
     // ADDING THE POSITION DATA FOR THE ICONS
     map.addSource(id, {
       type: "geojson",
       data: geojson,
     });
+
 
     // DECLARE THE NEW LAYER
     let layerId = `${id}-layer`;
@@ -86,6 +90,7 @@ export default function fetchMapData() {
       type: "symbol",
       source: id,
       layout: {
+
         "icon-image": "pin",
         "icon-anchor": "bottom",
         "icon-offset": [0, 5],
@@ -93,15 +98,31 @@ export default function fetchMapData() {
       },
     });
 
+
     // CLICK EVENT TO OPEN POPUP
     map.on("click", layerId, function (e) {
       let coordinates = e.features[0].geometry.coordinates.slice();
       let name = e.features[0].properties.name;
 
       // CALCULATING POPUP POSITION
+    map.on("styleimagemissing", function (e) {
+      const id = e.id;
+      const url = `https://api.geoapify.com/v1/icon/?type=material&color=red&icon=${id}&iconType=awesome&apiKey=${myAPIKey}`;
+
+      map.loadImage(url, function (error, image) {
+        if (error) throw error;
+        map.addImage(id, image, { pixelRatio: 2 });
+      });
+    });
+
+    map.on("click", layerId, function (e) {
+      let coordinates = e.features[0].geometry.coordinates.slice();
+      let name = e.features[0].properties.name;
+      let distance = e.features[0].properties.distance;
       while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
         coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
       }
+
 
       // CREATE A NEW POPUP INSTANCE
       new maplibregl.Popup({
@@ -117,6 +138,7 @@ export default function fetchMapData() {
     map.on("mouseenter", layerId, function () {
       map.getCanvas().style.cursor = "pointer";
     });
+
 
     // EVENT LISTENER FOR LEAVING ICONS
     map.on("mouseleave", layerId, function () {
