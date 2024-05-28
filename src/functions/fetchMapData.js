@@ -1,53 +1,63 @@
-import {
-  Map,
-  NavigationControl,
-  Popup,
-} from "https://cdn.skypack.dev/maplibre-gl";
+import maplibregl from "maplibre-gl";
 
+/**
+ * Function To Build Map with pins
+ * @author Benjamin Davies
+ *
+ * @export
+ */
 export default function fetchMapData() {
-  let myAPIKey = import.meta.env.VITE_GEOAPIFY_API_KEY;
-  console.log(myAPIKey);
+  // API KEY IMPORT
+  const myAPIKey = import.meta.env.VITE_GEOAPIFY_API_KEY;
 
+  // POSITION OF THE MAPS CORNERS USING LONGITUDE AND LATITUDE
   let bounds = {
-    // Paris
-    lat1: 48.88002146841028,
-    lon1: 2.3410839716279455,
-    lat2: 48.86395628860821,
-    lon2: 2.368348737185606,
+    lat1: -27.570125,
+    lon1: 153.021072,
+    lat2: -27.370125,
+    lon2: 153.321072,
   };
 
-  let map = new maplibregl.Map({
+  // CREATING A NEW MAP INSTANCE
+  const map = new maplibregl.Map({
     center: [(bounds.lon1 + bounds.lon2) / 2, (bounds.lat1 + bounds.lat2) / 2],
-    zoom: 15,
-    container: "my-map",
+    zoom: 11,
+    container: "map",
     style: `https://maps.geoapify.com/v1/styles/klokantech-basic/style.json?apiKey=${myAPIKey}`,
   });
+
+  // ADD A DEFAULT NAVIGATION BAR
   map.addControl(new maplibregl.NavigationControl());
 
-  map.on("load", () => {
-    // getting an icon from Geoapify Icons API
-    // Explicitly set scaleFactor=2 in the call
-    // and {pixelRatio: scale} to get better
-    // Marker Icon quality with MapLibre GL
-    let scale = 2;
-    map.loadImage(
-      `https://api.geoapify.com/v1/icon/?type=material&color=red&icon=cloud&iconType=awesome&apiKey=b5af20f3a98f4f1d8ce5eec60ff98ce3
-      `,
-      function (error, image) {
-        if (error) throw error;
-        map.addImage("utensils", image, {
-          pixelRatio: scale,
-        }); //38x55px, shadow adds 5px
+  // ADDING ICONS TO MAP
+  map.on("load", async () => {
+    try {
+      // URL TO FETCH ICON
+      const url = `https://api.geoapify.com/v1/icon/?icon=coffee&scaleFactor=2&color=%23ff9999&size=large&type=awesome&apiKey=${myAPIKey}`;
+
+      // FETCH THE IMAGE FROM API
+      const response = await fetch(url);
+      const icon = await response.blob();
+      const img = await createImageBitmap(icon);
+
+      // CHECKING THE IMAGE LOADED PROPERLY
+      if (img) {
+        map.addImage("pin", img, { pixelRatio: 2 });
+      } else {
+        console.error("Image loading failed.");
       }
-    );
+    } catch (error) {
+      console.error("An error occurred while loading the image:", error);
+    }
 
-    let type = "catering.cafe";
+    // FETCHING THE DINING VENUES FROM API
 
-    // getting cafes for the given boundary (number of results limited by 100)
-    let placesUrl = `https://api.geoapify.com/v2/places?categories=catering.cafe&filter=circle:${
-      (bounds.lon1 + bounds.lon2) / 2
-    },${(bounds.lat1 + bounds.lat2) / 2},10000&limit=100&apiKey=${myAPIKey}`;
+    let type = "catering"; // this is all hospotality venues
 
+    // API URL REQUEST TO GEOAPIFY
+    let placesUrl = `https://api.geoapify.com/v2/places?categories=catering&filter=rect:${bounds.lon1},${bounds.lat1},${bounds.lon2},${bounds.lat2}&limit=10&apiKey=${myAPIKey}`;
+
+    // FETCHING PLACES
     fetch(placesUrl)
       .then((response) => response.json())
       .then((places) => {
@@ -55,32 +65,46 @@ export default function fetchMapData() {
       });
   });
 
-  function showGeoJSONPoints(geojson, id) {
-    let layerId = `${id}-layer`;
 
+  // ADDING THE POPUP ON THE ICON
+  function showGeoJSONPoints(geojson, id) {
+    
+    // CLEARING ALL THE LAYERS BEFORE
     if (map.getSource(id)) {
-      // romove first the old one
       map.removeLayer(layerId);
       map.removeSource(id);
     }
 
+
+    // ADDING THE POSITION DATA FOR THE ICONS
     map.addSource(id, {
       type: "geojson",
       data: geojson,
     });
 
+
+    // DECLARE THE NEW LAYER
+    let layerId = `${id}-layer`;
     map.addLayer({
       id: layerId,
       type: "symbol",
       source: id,
       layout: {
-        "icon-image": "utensils",
+
+        "icon-image": "pin",
         "icon-anchor": "bottom",
         "icon-offset": [0, 5],
         "icon-allow-overlap": true,
       },
     });
 
+
+    // CLICK EVENT TO OPEN POPUP
+    map.on("click", layerId, function (e) {
+      let coordinates = e.features[0].geometry.coordinates.slice();
+      let name = e.features[0].properties.name;
+
+      // CALCULATING POPUP POSITION
     map.on("styleimagemissing", function (e) {
       const id = e.id;
       const url = `https://api.geoapify.com/v1/icon/?type=material&color=red&icon=${id}&iconType=awesome&apiKey=${myAPIKey}`;
@@ -95,30 +119,28 @@ export default function fetchMapData() {
       let coordinates = e.features[0].geometry.coordinates.slice();
       let name = e.features[0].properties.name;
       let distance = e.features[0].properties.distance;
-
-      // Ensure that if the map is zoomed out such that multiple
-      // copies of the feature are visible, the popup appears
-      // over the copy being pointed to.
       while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
         coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
       }
 
+
+      // CREATE A NEW POPUP INSTANCE
       new maplibregl.Popup({
         anchor: "bottom",
         offset: [0, -50],
       })
         .setLngLat(coordinates)
         .setText(name)
-        .setText(distance)
         .addTo(map);
     });
 
-    // Change the cursor to a pointer when the mouse is over the places layer.
+    // EVENT LISTENERS FOR MOUSE HOVER ON ICONS
     map.on("mouseenter", layerId, function () {
       map.getCanvas().style.cursor = "pointer";
     });
 
-    // Change it back to a pointer when it leaves.
+
+    // EVENT LISTENER FOR LEAVING ICONS
     map.on("mouseleave", layerId, function () {
       map.getCanvas().style.cursor = "";
     });
