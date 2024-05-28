@@ -7,7 +7,18 @@ import "maplibre-gl/dist/maplibre-gl.css";
  * @param {Object} bounds - Coordinates for the map bounds
  * @param {string} apiKey - API key for Geoapify
  */
-export default function fetchMapData(places, bounds, apiKey) {
+export default function fetchMapData(places) {
+  // API KEY IMPORT
+  const apiKey = import.meta.env.VITE_GEOAPIFY_API_KEY;
+
+  // POSITION OF THE MAP'S CORNERS USING LONGITUDE AND LATITUDE
+  const bounds = {
+    lat1: -27.570125,
+    lon1: 153.021072,
+    lat2: -27.370125,
+    lon2: 153.321072,
+  };
+
   // CREATING A NEW MAP INSTANCE
   const map = new maplibregl.Map({
     center: [(bounds.lon1 + bounds.lon2) / 2, (bounds.lat1 + bounds.lat2) / 2],
