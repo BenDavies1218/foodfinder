@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export default function FoodFavouriteItems({ props }) {
   // STATE FOR THE FAVOURITE ICON
@@ -27,7 +27,7 @@ export default function FoodFavouriteItems({ props }) {
   return (
     <div>
       <div className="container">
-        {/* BECAUSE WE GRAB ALL OF THE LOCAL STORAGE WE NEED TO NOT RENDER THE CURRENTSEARCH CONTENT */}
+        {/* BECAUSE WE GRAB ALL OF THE LOCAL STORAGE WE NEED TO NOT RENDER THE CURRENTSEARCH CONTEXT */}
         {key !== "currentSearch" ? (
           <>
             <h5>{key}</h5>
