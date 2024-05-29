@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import fetchMapData from "../functions/fetchMapData";
 import "maplibre-gl/dist/maplibre-gl.css";
 import "../styles/SearchPage.css";
+import FoodVenueItem from "../components/FoodVenueItem";
 
 export default function SearchPage() {
-  // Loading Div on Map Element State
+  // Loading Div over the Map Element State
   const [loading, setLoading] = useState(true);
 
   // Food Venues State
@@ -13,16 +14,6 @@ export default function SearchPage() {
   const [fastfood, setFastFood] = useState([]);
   const [bar, setBar] = useState([]);
   const [iceCream, setIceCream] = useState([]);
-
-  // Favourite Icon
-  const [favouriteIcon, setFavouriteIcon] = useState(false);
-
-  // Handle favourite Function
-  const handleFavouriteClick = () => {
-    setFavouriteIcon(!favouriteIcon);
-
-    console.log(favouriteIcon);
-  };
 
   useEffect(() => {
     // API KEY IMPORT
@@ -38,7 +29,6 @@ export default function SearchPage() {
 
       // Call functions With JSON Data
       .then((places) => {
-        // Build Map
         fetchMapData(places);
 
         // Remove Loading screen
@@ -70,8 +60,6 @@ export default function SearchPage() {
             address: place.properties.address_line2,
             distance: place.properties.distance || "Distance not available",
           }));
-        console.log(restaurants);
-        console.log(cafes);
         setCafes(cafes);
         setRestaurants(restaurants);
       })
@@ -88,30 +76,11 @@ export default function SearchPage() {
         {loading && <div className="loadingContainer">Loading...</div>}
       </div>
       <section id="displayResults">
-        {cafes && <h2>Cafe</h2>}
+        {cafes && <h2>Cafes</h2>}
         <div className="cafeContainer">
           {cafes.length > 0 &&
             cafes.map((cafe, index) => (
-              <div key={index} className="venueContainer">
-                <h4>{cafe.name}</h4>
-                <div>
-                  <p>Address: {cafe.address}</p>
-                  <p>Distance Away: {cafe.distance / 1000} km</p>
-                  {favouriteIcon ? (
-                    <i
-                      className="fa-solid fa-heart"
-                      style={{ color: "#FFD43B" }}
-                      onClick={handleFavouriteClick}
-                    ></i>
-                  ) : (
-                    <i
-                      className="fa-regular fa-heart"
-                      style={{ color: "#FFD43B" }}
-                      onClick={handleFavouriteClick}
-                    ></i>
-                  )}
-                </div>
-              </div>
+              <FoodVenueItem key={index} props={cafe} />
             ))}
         </div>
 
@@ -119,26 +88,7 @@ export default function SearchPage() {
         <div className="restaurantContainer">
           {restaurants.length > 0 &&
             restaurants.map((restaurant, index) => (
-              <div key={index}>
-                <h4>{restaurant.name}</h4>
-                <div>
-                  <p>Address: {restaurant.address}</p>
-                  <p>Distance Away: {restaurant.distance / 1000} km</p>
-                  {favouriteIcon ? (
-                    <i
-                      className="fa-solid fa-heart"
-                      style={{ color: "#FFD43B" }} // Corrected inline style syntax
-                      onClick={handleFavouriteClick}
-                    ></i>
-                  ) : (
-                    <i
-                      className="fa-regular fa-heart"
-                      style={{ color: "#FFD43B" }} // Corrected inline style syntax
-                      onClick={handleFavouriteClick}
-                    ></i>
-                  )}
-                </div>
-              </div>
+              <FoodVenueItem key={index} props={restaurant} />
             ))}
         </div>
       </section>
