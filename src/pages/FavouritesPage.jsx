@@ -16,10 +16,16 @@ export default function FavouritePage() {
     setLocalStorageItems(items);
   }, []);
 
-  const childData = localStorageItems;
   return (
     <>
-      <FoodFavouritesItems props={childData} />
+      <h1>Hello from the Favourites page</h1>
+      <div className="favouriteItemContainer">
+        {localStorageItems > 1
+          ? localStorageItems.map((item, index) => (
+              <FoodFavouritesItems key={index} props={item} />
+            ))
+          : "Nothing in your favourites"}
+      </div>
     </>
   );
 }

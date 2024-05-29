@@ -34,8 +34,6 @@ export default function SearchPage() {
         // Remove Loading screen
         setLoading(false);
 
-        console.log(places);
-
         // Filter cafes and restaurants
         const cafes = places.features
           .filter(
@@ -72,10 +70,10 @@ export default function SearchPage() {
     <>
       <h1>Hello from the Search page</h1>
       <div id="map">
-        {/* Conditional render Loading element */}
         {loading && <div className="loadingContainer">Loading...</div>}
       </div>
       <section id="displayResults">
+        {/* CAFE COMPONENTS */}
         {cafes && <h2>Cafes</h2>}
         <div className="cafeContainer">
           {cafes.length > 0 &&
@@ -84,6 +82,7 @@ export default function SearchPage() {
             ))}
         </div>
 
+        {/* RESTAURANT COMPONENTS */}
         {restaurants && <h2>Restaurants</h2>}
         <div className="restaurantContainer">
           {restaurants.length > 0 &&
