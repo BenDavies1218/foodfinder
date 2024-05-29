@@ -1,7 +1,6 @@
 import { useState } from "react";
 
 export default function FoodVenueItem({ props }) {
-  console.log(props);
   // Favourite Icon
   const [favouriteIcon, setFavouriteIcon] = useState(false);
 
@@ -27,17 +26,16 @@ export default function FoodVenueItem({ props }) {
         <div>
           <p>Address: {props.address}</p>
           <p>Distance Away: {props.distance / 1000} km</p>
-          {/* Icon and favorite logic */}
           {favouriteIcon ? (
             <i
               className="fa-solid fa-heart"
-              style={{ color: "#FFD43B" }} // Corrected inline style syntax
+              style={{ color: "#FFD43B" }}
               onClick={() => handleFavouriteClick(props)}
             ></i>
           ) : (
             <i
               className="fa-regular fa-heart"
-              style={{ color: "#FFD43B" }} // Corrected inline style syntax
+              style={{ color: "#FFD43B" }}
               onClick={() => handleFavouriteClick(props)}
             ></i>
           )}
