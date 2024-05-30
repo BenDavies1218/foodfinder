@@ -1,11 +1,6 @@
 import maplibregl from "maplibre-gl";
-import "maplibre-gl/dist/maplibre-gl.css";
-
 /**
  * Function to build a map with pins
- * @param {Object} places - GeoJSON data for the places
- * @param {Object} bounds - Coordinates for the map bounds
- * @param {string} apiKey - API key for Geoapify
  */
 export default function fetchMapData(places) {
   // API KEY IMPORT
@@ -22,7 +17,7 @@ export default function fetchMapData(places) {
   // CREATING A NEW MAP INSTANCE
   const map = new maplibregl.Map({
     center: [(bounds.lon1 + bounds.lon2) / 2, (bounds.lat1 + bounds.lat2) / 2],
-    zoom: 11,
+    zoom: 12,
     container: "map",
     style: `https://maps.geoapify.com/v1/styles/klokantech-basic/style.json?apiKey=${apiKey}`,
   });
@@ -54,12 +49,6 @@ export default function fetchMapData(places) {
   });
 }
 
-/**
- * Function to show GeoJSON points on the map
- * @param {Object} map - Map instance
- * @param {Object} geojson - GeoJSON data
- * @param {string} id - Source and layer ID
- */
 function showGeoJSONPoints(map, geojson, id) {
   // CLEARING ALL THE LAYERS BEFORE
   if (map.getSource(id)) {

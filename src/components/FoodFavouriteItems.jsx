@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 export default function FoodFavouriteItems({ props }) {
   // STATE FOR THE FAVOURITE ICON
-  const [favouriteIcon, setFavouriteIcon] = useState(false);
+  const [favouriteIcon, setFavouriteIcon] = useState(true);
 
   // DESRUCTURE THE PROPS INTO AN OBJECT
   const { key, value } = props;

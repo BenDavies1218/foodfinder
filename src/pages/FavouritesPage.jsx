@@ -6,6 +6,7 @@ export default function FavouritePage() {
 
   // Fetch data from localStorage when the component mounts
   useEffect(() => {
+    // INTERATE THROUGH THE LOCAL STORAGE TO GET ALL FAVOURITES
     const items = [];
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i);

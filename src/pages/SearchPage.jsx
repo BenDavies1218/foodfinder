@@ -6,7 +6,7 @@ import FoodVenueItem from "../components/FoodVenueItem";
 import sortFilterResponseData from "../functions/sortFilterResponseData";
 
 export default function SearchPage() {
-  // Loading Div over the Map Element State
+  // STATE FOR Loading Div over the Map Element
   const [loading, setLoading] = useState(true);
 
   // Food Venues State
@@ -21,7 +21,7 @@ export default function SearchPage() {
     const myAPIKey = import.meta.env.VITE_GEOAPIFY_API_KEY;
 
     // API URL REQUEST TO GEOAPIFY
-    const placesUrl = `https://api.geoapify.com/v2/places?categories=catering&filter=circle:153.1531665115317,-27.468924750815013,5000&bias=proximity:153.1531665115317,-27.468924750815013&limit=20&apiKey=${myAPIKey}`;
+    const placesUrl = `https://api.geoapify.com/v2/places?categories=catering&filter=circle:153.1531665115317,-27.468924750815013,5000&bias=proximity:153.1531665115317,-27.468924750815013&limit=100&apiKey=${myAPIKey}`;
 
     // FETCHING PLACES
     fetch(placesUrl)
@@ -44,8 +44,6 @@ export default function SearchPage() {
         setBars(bars);
         setFastFoods(fastFoods);
         setDesserts(desserts);
-
-        console.log(cafes, bars, fastFoods, restaurants, desserts);
       })
       // HANDLE ANY ERRORS THAT COME OUR WAY
       .catch((error) => {
@@ -89,8 +87,8 @@ export default function SearchPage() {
         {fastfoods.length > 0 && <h2>Fast Food</h2>}
         <div className="foodVenueContainer">
           {fastfoods.length > 0 &&
-            fastfoods.map((restaurant, index) => (
-              <FoodVenueItem key={index} props={restaurant} />
+            fastfoods.map((fastfood, index) => (
+              <FoodVenueItem key={index} props={fastfood} />
             ))}
         </div>
 
@@ -98,8 +96,8 @@ export default function SearchPage() {
         {desserts.length > 0 && <h2>Desserts</h2>}
         <div className="foodVenueContainer">
           {desserts.length > 0 &&
-            desserts.map((restaurant, index) => (
-              <FoodVenueItem key={index} props={restaurant} />
+            desserts.map((dessert, index) => (
+              <FoodVenueItem key={index} props={dessert} />
             ))}
         </div>
       </section>

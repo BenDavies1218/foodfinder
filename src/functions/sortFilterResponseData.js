@@ -11,6 +11,7 @@ export default function sortFilterResponseData(places) {
       name: place.properties.name,
       address: place.properties.address_line2,
       distance: place.properties.distance || "Distance not available",
+      categories: place.properties.categories || "No data",
     }));
 
   // FILTER RESTAURANT DATA
@@ -24,6 +25,7 @@ export default function sortFilterResponseData(places) {
       name: place.properties.name,
       address: place.properties.address_line2,
       distance: place.properties.distance || "Distance not available",
+      categories: place.properties.categories || "No data",
     }));
 
   // FILTER BAR DATA
@@ -37,6 +39,7 @@ export default function sortFilterResponseData(places) {
       name: place.properties.name,
       address: place.properties.address_line2,
       distance: place.properties.distance || "Distance not available",
+      categories: place.properties.categories || "No data",
     }));
 
   // FILTER FAST FOOD DATA
@@ -50,6 +53,7 @@ export default function sortFilterResponseData(places) {
       name: place.properties.name,
       address: place.properties.address_line2,
       distance: place.properties.distance || "Distance not available",
+      categories: place.properties.categories || "No data",
     }));
 
   // FILTER DESSERT DATA
@@ -60,9 +64,10 @@ export default function sortFilterResponseData(places) {
         place.properties?.name !== undefined
     )
     .map((place) => ({
-      name: place.properties.name,
-      address: place.properties.address_line2,
+      name: place.properties.name || "No data",
+      address: place.properties.address_line2 || "No data",
       distance: place.properties.distance || "Distance not available",
+      categories: place.properties.categories || "No data",
     }));
 
   return { cafes, restaurants, bars, fastFoods, desserts };
