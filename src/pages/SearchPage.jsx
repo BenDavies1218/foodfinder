@@ -9,6 +9,9 @@ export default function SearchPage() {
   // STATE FOR Loading Div over the Map Element
   const [loading, setLoading] = useState(true);
 
+  // STATE FOR USER LOCATION
+  const [userLocation, setUserLocation] = useState({});
+
   // Food Venues State
   const [cafes, setCafes] = useState([]);
   const [restaurants, setRestaurants] = useState([]);
@@ -16,25 +19,33 @@ export default function SearchPage() {
   const [bars, setBars] = useState([]);
   const [desserts, setDesserts] = useState([]);
 
+  // Radius Slider State
+  const [radius, setRadius] = useState(2);
+
   const x = document.getElementById("yourLocation");
 
-  const handleGetExactLocation = () => {
+  // GET THE USERS EXACT LOCATION AND SET TO STATE
+  function handleGetExactLocation() {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(showPosition);
+      console.log("Exact position found");
     } else {
       x.innerHTML = "Geolocation is not supported by this browser.";
     }
+  }
+
+  // UPDATE THE RADIUS STATE
+  const handleRadiusChange = (event) => {
+    setRadius(parseInt(event.target.value));
   };
 
-  // const handleRadiusChange = () => {
-  //   useEffect;
-  // };
   useEffect(() => {
     // API KEY IMPORT
     const myAPIKey = import.meta.env.VITE_GEOAPIFY_API_KEY;
 
     // API URL REQUEST TO GEOAPIFY
-    const placesUrl = `https://api.geoapify.com/v2/places?categories=catering&filter=circle:153.1531665115317,-27.468924750815013,5000&bias=proximity:153.1531665115317,-27.468924750815013&limit=100&apiKey=${myAPIKey}`;
+    const placesUrl = `https://api.geoapify.com/v2/places?categories=catering&filter=circle:153.1531665115317,-27.468924750815013,${
+      radius * 1000
+    }&bias=proximity:153.1531665115317,-27.468924750815013&limit=100&apiKey=${myAPIKey}`;
 
     // FETCHING PLACES
     fetch(placesUrl)
@@ -66,18 +77,28 @@ export default function SearchPage() {
 
   return (
     <>
-      <h1>Hello from the Search page</h1>
       <div id="map">
         {loading && <div className="loadingContainer">Loading...</div>}
       </div>
 
       <div className="searchMenu">
         <div className="searchinputs">
-          <button onClick={handleGetExactLocation}>Use your location</button>
-          <p id="yourLocation"></p>
-          <h3>Radius</h3>
-          <input type="range" name="slider" id="slider" />
-          <h4>kms</h4>
+          <button onClick={handleGetExactLocation}>Use Exact Location</button>
+          <div className="radiusElement">
+            <div>
+              <h3>Radius</h3>
+              <input
+                type="range"
+                name="slider"
+                id="slider"
+                min={2}
+                max={15}
+                value={radius}
+                onChange={handleRadiusChange}
+              />
+              <h4>{radius} km</h4>
+            </div>
+          </div>
         </div>
 
         <div className="filterSearch">

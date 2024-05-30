@@ -5,8 +5,6 @@ import SearchPage from "./pages/SearchPage";
 import FavouritesPage from "./pages/FavouritesPage";
 
 function App() {
-  // Fetch user Location and save to Context
-
   return (
     <>
       {/* Routing */}
