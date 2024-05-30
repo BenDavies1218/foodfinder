@@ -1,22 +1,54 @@
 @import url(_variables.css);
 
 * {
-    background-color: var(--black);
+    margin: 0;
+    padding: 0;
+}
+
+.image-background {
+    width: 100vw;
+    height: 100vh;
+    background-image: url(../assets/cafe.jpg);
+    background-size: 110%, cover, cover;
+    background-position: center, top, bottom;
+    background-repeat: no-repeat;
+    filter: grayscale(100);
+    z-index: -2;
+
+    .image-background-overlay {
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        background-color: var(--black);
+        opacity: 95%;
+        z-index: -1;
+    }
+}
+
+.row {
+    position: absolute;
+    top: 0%;
+    bottom: 0%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    line-height: 150px;
     width: 100%;
     height: auto;
-    margin: 0;
-    padding: 0px;
+    z-index: 1;
 
-    .row {
-        width: 100%;
-        padding: 50px 0 30px 0;
+    .main-title {
+        font-family: 'Roboto', 'Helvetica Neue', sans-serif;
+        font-weight: 900;
+        font-size: 7em;
+        color: var(--orange);
+    }
 
-        .main-title {
-            font-size: 7em;
-            color: var(--orange);
-        }
-    
-        .main-search-button {
+    .main-search-button {
         width: 200px;
         height: auto;
         background-color: var(--black);
@@ -24,20 +56,21 @@
         border-radius: 30px;
         color: var(--orange);
         cursor: pointer;
-        font-weight: 600;
+        font-family: 'Roboto', 'Helvetica Neue', sans-serif;
+        font-weight: 300;
         font-size: 1.5em;
         padding: 0 18px;
         line-height: 50px;
         text-align: center;
-        }
+    }
 
-        .main-search-button:hover {
+    .main-search-button:hover {
         background-color: var(--orange);
-        color: var(--white)
-        }
+        color: var(--white);
+        font-weight: 600;
+    }
 
-        .main-search-button:active {
+    .main-search-button:active {
         transform: translate(0, 2px);
-        }
-    }   
+    }
 }

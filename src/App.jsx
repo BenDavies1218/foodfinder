@@ -3,7 +3,6 @@ import { Route, Routes } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import SearchPage from "./pages/SearchPage";
 import FavouritesPage from "./pages/FavouritesPage";
-import "./styles/App.css";
 
 function App() {
   // Fetch user Location and save to Context
