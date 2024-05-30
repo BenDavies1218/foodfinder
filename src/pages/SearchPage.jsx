@@ -16,6 +16,19 @@ export default function SearchPage() {
   const [bars, setBars] = useState([]);
   const [desserts, setDesserts] = useState([]);
 
+  const x = document.getElementById("yourLocation");
+
+  const handleGetExactLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+      x.innerHTML = "Geolocation is not supported by this browser.";
+    }
+  };
+
+  // const handleRadiusChange = () => {
+  //   useEffect;
+  // };
   useEffect(() => {
     // API KEY IMPORT
     const myAPIKey = import.meta.env.VITE_GEOAPIFY_API_KEY;
@@ -57,6 +70,32 @@ export default function SearchPage() {
       <div id="map">
         {loading && <div className="loadingContainer">Loading...</div>}
       </div>
+
+      <div className="searchMenu">
+        <div className="searchinputs">
+          <button onClick={handleGetExactLocation}>Use your location</button>
+          <p id="yourLocation"></p>
+          <h3>Radius</h3>
+          <input type="range" name="slider" id="slider" />
+          <h4>kms</h4>
+        </div>
+
+        <div className="filterSearch">
+          <input type="checkbox" name="all" id="allBox" className="checkbox" />
+          All
+          <input type="checkbox" name="all" id="allBox" className="checkbox" />
+          Cafe
+          <input type="checkbox" name="all" id="allBox" className="checkbox" />
+          Restaurant
+          <input type="checkbox" name="all" id="allBox" className="checkbox" />
+          Fast Food
+          <input type="checkbox" name="all" id="allBox" className="checkbox" />
+          Bars & Pubs
+          <input type="checkbox" name="all" id="allBox" className="checkbox" />
+          Dessert
+        </div>
+      </div>
+
       <section id="displayResults">
         {/* CAFE COMPONENTS */}
         {cafes.length > 0 && <h2>Cafes</h2>}
