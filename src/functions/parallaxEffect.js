@@ -8,6 +8,11 @@ export default function parallax() {
 
         // Function to handle parallax effect based on mouse movement
         function parallax(e) {
+
+            // Getting the half width and height of the window
+            let _w = window.innerWidth / 2;
+            let _h = window.innerHeight / 2;
+
             // Capturing mouse coordinates
             let _mouseX = e.clientX;
             let _mouseY = e.clientY;
