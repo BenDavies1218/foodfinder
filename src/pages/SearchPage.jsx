@@ -154,7 +154,11 @@ export default function SearchPage() {
   return (
     <>
       <div id="map">
-        {loading && <div className="loadingContainer">Loading...</div>}
+        {loading && <div className="loadingContainer">
+          <p className="loading-text">
+            Loading...
+          </p>  
+        </div>}
       </div>
       <div className="searchMenu">
         <div className="searchinputs">
@@ -226,7 +230,7 @@ export default function SearchPage() {
         {/* CAFE COMPONENTS */}
         {cafes.length > 0 && filterMenu.cafesState && (
           <>
-            <h2>Cafes</h2>
+            <h2 className="display-title">Cafes</h2>
             <div className="foodVenueContainer">
               {cafes.length > 0 &&
                 cafes.map((cafe, index) => (
@@ -239,7 +243,7 @@ export default function SearchPage() {
         {/* RESTAURANT COMPONENTS */}
         {restaurants.length > 0 && filterMenu.restaurantsState && (
           <>
-            <h2>Restaurants</h2>
+            <h2 className="display-title">Restaurants</h2>
             <div className="foodVenueContainer">
               {restaurants.length > 0 &&
                 restaurants.map((restaurant, index) => (
@@ -252,7 +256,7 @@ export default function SearchPage() {
         {/* BARS COMPONENTS */}
         {bars.length > 0 && filterMenu.BarsState && (
           <>
-            <h2>Bars & Pubs</h2>
+            <h2 className="display-title">Bars & Pubs</h2>
             <div className="barsontainer">
               {bars.length > 0 &&
                 bars.map((bar, index) => (
@@ -265,7 +269,7 @@ export default function SearchPage() {
         {/* FAST FOOD COMPONENTS */}
         {fastfoods.length > 0 && filterMenu.fastFoodState && (
           <>
-            <h2>Fast Food</h2>
+            <h2 className="display-title">Fast Food</h2>
             <div className="foodVenueContainer">
               {fastfoods.length > 0 &&
                 fastfoods.map((fastfood, index) => (
@@ -278,7 +282,7 @@ export default function SearchPage() {
         {/* DESSERT COMPONENTS */}
         {desserts.length > 0 && filterMenu.dessertsState && (
           <>
-            <h2>Desserts</h2>
+            <h2 className="display-title">Desserts</h2>
             <div className="foodVenueContainer">
               {desserts.length > 0 &&
                 desserts.map((dessert, index) => (
