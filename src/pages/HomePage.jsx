@@ -1,4 +1,4 @@
-import React, { Link, redirect } from "react-router-dom";
+import { Link, redirect } from "react-router-dom";
 import parallax from "../functions/parallaxEffect";
 import "../styles/HomePage.css";
 
