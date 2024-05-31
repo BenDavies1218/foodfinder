@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, redirect } from "react-router-dom";
 import parallax from "../functions/parallaxEffect";
 import "../styles/HomePage.css";
 
@@ -17,15 +17,16 @@ export default function HomePage() {
           const { latitude, longitude } = position.coords;
           setCurrentSearch({ latitude, longitude });
           console.log("Exact position found");
+          redirect("/search");
         },
         (error) => {
           console.error("Error getting location:", error);
-          // Handle error or use fallback method (e.g., API call)
+          // IF THERES AN ERROR FALLBACK TO API CALL
           fetchLocationFromAPI();
         }
       );
     } else {
-      console.log("Geolocation is not supported by this browser.");
+      console.log("Geolocation or you are on a desktop");
       // Handle error or use fallback method (e.g., API call)
       fetchLocationFromAPI();
     }
@@ -42,6 +43,7 @@ export default function HomePage() {
         console.log(data);
         const { latitude, longitude } = data.location;
         setCurrentSearch({ latitude, longitude });
+        redirect("/search");
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -67,15 +69,10 @@ export default function HomePage() {
         <h1 className="main-title">FoodFinder</h1>
 
         {/* Link to navigate to the search page */}
-        <Link to="/search">
-          {/* Button to trigger the search */}
-          <button
-            className="main-search-button"
-            onClick={handleGetExactLocation}
-          >
-            Search
-          </button>
-        </Link>
+        {/* Button to trigger the search */}
+        <button className="main-search-button" onClick={handleGetExactLocation}>
+          Search
+        </button>
       </div>
     </>
   );

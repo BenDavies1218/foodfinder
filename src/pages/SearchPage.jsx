@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import fetchMapData from "../functions/fetchMapData";
 import "maplibre-gl/dist/maplibre-gl.css";
 import "../styles/SearchPage.css";
@@ -22,63 +22,56 @@ export default function SearchPage() {
   // STATE FOR USER LOCATION
   const [userLocation, setUserLocation] = useState(null);
 
+  setUserLocation(JSON.parse(localStorage.getItem("currentSearch")));
+
   // UPDATE THE RADIUS STATE
   const handleRadiusChange = (event) => {
     setRadius(parseInt(event.target.value));
   };
 
   useEffect(() => {
-    const fetchUserLocation = async () => {
-      let location = JSON.parse(localStorage.getItem("currentSearch"));
-      while (!location) {
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-        location = JSON.parse(localStorage.getItem("currentSearch"));
-      }
-      setUserLocation(location);
-    };
+    // Check if userLocation is available
+    if (userLocation) {
+      // API KEY IMPORT
+      const myAPIKey = import.meta.env.VITE_GEOAPIFY_API_KEY;
 
-    fetchUserLocation();
-  }, []);
+      // API URL REQUEST TO GEOAPIFY
+      const placesUrl = `https://api.geoapify.com/v2/places?categories=catering&filter=circle:${
+        userLocation.longitude
+      },${userLocation.latitude},${radius * 1000}&bias=proximity:${
+        userLocation.longitude + 0.1
+      },${userLocation.latitude}&limit=200&apiKey=${myAPIKey}`;
 
-  useEffect(() => {
-    if (!userLocation) return;
-    // API KEY IMPORT
-    const myAPIKey = import.meta.env.VITE_GEOAPIFY_API_KEY;
+      // FETCHING PLACES
+      fetch(placesUrl)
+        // Convert response to JSON
+        .then((response) => response.json())
 
-    // API URL REQUEST TO GEOAPIFY
-    const placesUrl = `https://api.geoapify.com/v2/places?categories=catering&filter=circle:${
-      userLocation.longitude
-    },${userLocation.latitude},${radius * 1000}&bias=proximity:${
-      userLocation.longitude + 0.1
-    },${userLocation.latitude}&limit=200&apiKey=${myAPIKey}`;
+        // Call functions With JSON Data
+        .then((places) => {
+          fetchMapData(places, userLocation);
+          // Remove Loading screen
+          setLoading(false);
 
-    // FETCHING PLACES
-    fetch(placesUrl)
-      // Convert response to JSON
-      .then((response) => response.json())
+          // I PUT THE SORTING IN ANOTHER MODULE BECAUSE IT WAS TAKING UP TOO MUCH SPACE
+          let { cafes, restaurants, bars, fastFoods, desserts } =
+            sortFilterResponseData(places);
 
-      // Call functions With JSON Data
-      .then((places) => {
-        fetchMapData(places, userLocation);
-        // Remove Loading screen
-        setLoading(false);
+          // SET THE STATE TO THE SORTED DATA
+          setCafes(cafes);
+          setRestaurants(restaurants);
+          setBars(bars);
+          setFastFoods(fastFoods);
+          setDesserts(desserts);
+        })
+        // HANDLE ANY ERRORS THAT COME OUR WAY
+        .catch((error) => {
+          console.error("An error occurred while fetching places:", error);
+        });
 
-        // I PUT THE SORTING IN ANOTHER MODULE BECAUSE IT WAS TAKING UP TOO MUCH SPACE
-        let { cafes, restaurants, bars, fastFoods, desserts } =
-          sortFilterResponseData(places);
-
-        // SET THE STATE TO THE SORTED DATA
-        setCafes(cafes);
-        setRestaurants(restaurants);
-        setBars(bars);
-        setFastFoods(fastFoods);
-        setDesserts(desserts);
-      })
-      // HANDLE ANY ERRORS THAT COME OUR WAY
-      .catch((error) => {
-        console.error("An error occurred while fetching places:", error);
-      });
-  }, [userLocation]);
+      console.log("radius changed");
+    }
+  }, [userLocation, radius]);
 
   return (
     <>
