@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import fetchMapData from "../functions/fetchMapData";
 import "maplibre-gl/dist/maplibre-gl.css";
 import "../styles/SearchPage.css";
@@ -9,9 +9,6 @@ export default function SearchPage() {
   // STATE FOR Loading Div over the Map Element
   const [loading, setLoading] = useState(true);
 
-  // STATE FOR USER LOCATION
-  const [userLocation, setUserLocation] = useState({});
-
   // Food Venues State
   const [cafes, setCafes] = useState([]);
   const [restaurants, setRestaurants] = useState([]);
@@ -20,18 +17,10 @@ export default function SearchPage() {
   const [desserts, setDesserts] = useState([]);
 
   // Radius Slider State
-  const [radius, setRadius] = useState(2);
+  const [radius, setRadius] = useState(5);
 
-  const x = document.getElementById("yourLocation");
-
-  // GET THE USERS EXACT LOCATION AND SET TO STATE
-  function handleGetExactLocation() {
-    if (navigator.geolocation) {
-      console.log("Exact position found");
-    } else {
-      x.innerHTML = "Geolocation is not supported by this browser.";
-    }
-  }
+  // STATE FOR USER LOCATION
+  const [userLocation, setUserLocation] = useState(null);
 
   // UPDATE THE RADIUS STATE
   const handleRadiusChange = (event) => {
@@ -39,13 +28,29 @@ export default function SearchPage() {
   };
 
   useEffect(() => {
+    const fetchUserLocation = async () => {
+      let location = JSON.parse(localStorage.getItem("currentSearch"));
+      while (!location) {
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        location = JSON.parse(localStorage.getItem("currentSearch"));
+      }
+      setUserLocation(location);
+    };
+
+    fetchUserLocation();
+  }, []);
+
+  useEffect(() => {
+    if (!userLocation) return;
     // API KEY IMPORT
     const myAPIKey = import.meta.env.VITE_GEOAPIFY_API_KEY;
 
     // API URL REQUEST TO GEOAPIFY
-    const placesUrl = `https://api.geoapify.com/v2/places?categories=catering&filter=circle:153.1531665115317,-27.468924750815013,${
-      radius * 1000
-    }&bias=proximity:153.1531665115317,-27.468924750815013&limit=100&apiKey=${myAPIKey}`;
+    const placesUrl = `https://api.geoapify.com/v2/places?categories=catering&filter=circle:${
+      userLocation.longitude
+    },${userLocation.latitude},${radius * 1000}&bias=proximity:${
+      userLocation.longitude + 0.1
+    },${userLocation.latitude}&limit=200&apiKey=${myAPIKey}`;
 
     // FETCHING PLACES
     fetch(placesUrl)
@@ -54,7 +59,7 @@ export default function SearchPage() {
 
       // Call functions With JSON Data
       .then((places) => {
-        fetchMapData(places);
+        fetchMapData(places, userLocation);
         // Remove Loading screen
         setLoading(false);
 
@@ -73,7 +78,7 @@ export default function SearchPage() {
       .catch((error) => {
         console.error("An error occurred while fetching places:", error);
       });
-  }, []);
+  }, [userLocation]);
 
   return (
     <>
@@ -83,36 +88,43 @@ export default function SearchPage() {
 
       <div className="searchMenu">
         <div className="searchinputs">
-          <button onClick={handleGetExactLocation}>Use Exact Location</button>
           <div className="radiusElement">
-            <div>
-              <h3>Radius</h3>
-              <input
-                type="range"
-                name="slider"
-                id="slider"
-                min={2}
-                max={15}
-                value={radius}
-                onChange={handleRadiusChange}
-              />
-              <h4>{radius} km</h4>
-            </div>
+            <h3>Radius</h3>
+            <input
+              type="range"
+              name="slider"
+              id="slider"
+              min={2}
+              max={15}
+              value={radius}
+              onChange={handleRadiusChange}
+            />
+            <h4>{radius} km</h4>
           </div>
         </div>
 
         <div className="filterSearch">
           <input type="checkbox" name="all" id="allBox" className="checkbox" />
           All
-          <input type="checkbox" name="all" id="allBox" className="checkbox" />
+          <input type="checkbox" name="all" id="cafeBox" className="checkbox" />
           Cafe
-          <input type="checkbox" name="all" id="allBox" className="checkbox" />
+          <input
+            type="checkbox"
+            name="all"
+            id="restaurantBox"
+            className="checkbox"
+          />
           Restaurant
-          <input type="checkbox" name="all" id="allBox" className="checkbox" />
+          <input type="checkbox" name="all" id="fastBox" className="checkbox" />
           Fast Food
-          <input type="checkbox" name="all" id="allBox" className="checkbox" />
+          <input type="checkbox" name="all" id="barBox" className="checkbox" />
           Bars & Pubs
-          <input type="checkbox" name="all" id="allBox" className="checkbox" />
+          <input
+            type="checkbox"
+            name="all"
+            id="dessertBox"
+            className="checkbox"
+          />
           Dessert
         </div>
       </div>

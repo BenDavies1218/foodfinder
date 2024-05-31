@@ -2,22 +2,24 @@ import maplibregl from "maplibre-gl";
 /**
  * Function to build a map with pins
  */
-export default function fetchMapData(places) {
+export default function fetchMapData(places, userLocation) {
   // API KEY IMPORT
   const apiKey = import.meta.env.VITE_GEOAPIFY_API_KEY;
 
+  console.log(userLocation);
+
   // POSITION OF THE MAP'S CORNERS USING LONGITUDE AND LATITUDE
   const bounds = {
-    lat1: -27.570125,
-    lon1: 153.021072,
-    lat2: -27.370125,
-    lon2: 153.321072,
+    lat1: userLocation.latitude - 0.2,
+    lon1: userLocation.longitude - 0.4,
+    lat2: userLocation.latitude + 0.2,
+    lon2: userLocation.longitude + 0.2,
   };
 
   // CREATING A NEW MAP INSTANCE
   const map = new maplibregl.Map({
     center: [(bounds.lon1 + bounds.lon2) / 2, (bounds.lat1 + bounds.lat2) / 2],
-    zoom: 12,
+    zoom: 11,
     container: "map",
     style: `https://maps.geoapify.com/v1/styles/klokantech-basic/style.json?apiKey=${apiKey}`,
   });
