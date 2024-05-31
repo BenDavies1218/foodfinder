@@ -1,27 +1,84 @@
-body {
+@import url(./_variables.css);
+
+* {
     margin: 0;
     padding: 0;
-}
-  
-#map {
-  top: 0;
-  bottom: 0;
-  width: 100%;
-  height: 500px;
-  
-  .control-panel {
-    position: absolute;
-    top: 0;
-    right: 0;
-    max-width: 320px;
-    background: #fff;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-    padding: 12px 24px;
-    margin: 20px;
-    font-size: 13px;
-    line-height: 2;
-    color: #6b6b76;
-    text-transform: uppercase;
-    outline: none;
+
+    .search-container {
+      display: flex;
+
+      #map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+      }
+
+      .searchMenu {
+        position: absolute;
+        right: 1%;
+        bottom: 1%;
+        width: 35%;
+        border-radius: 30px;
+        font-family: 'Roboto', 'Helvetica Neue', sans-serif;
+        font-weight: 300;
+        font-size: 1rem;
+        background-color: var(--black);
+        color: var(--white);
+
+        .searchinputs {
+          padding: 5% 5% 2% 5%;
+
+          .radiusElement {
+            display: flex;
+            flex-direction: row;
+
+            h3 {
+              padding-right: 5%;
+            }
+
+            h4 {
+              padding-left: 5%;
+            }
+          }
+        }
+
+        .filterSearch {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-evenly;
+          padding: 0 5% 5% 5%;
+        }
+      }
+
+      #displayResults {
+        width: 25%;
+        height: 100%;
+        position: absolute;
+        left: 0;
+        font-family: 'Roboto', 'Helvetica Neue', sans-serif;
+        font-weight: 300;
+        font-size: 1rem;
+        background-color: var(--black);
+        color: var(--white);
+        overflow-y: scroll;
+
+        i {
+          padding: 5%;
+          align-self: flex-end;
+        }
+
+        .display-title {
+          padding: 5%;
+        }
+
+        .foodVenueContainer {
+          padding: 5%;
+          border-top: 3px solid var(--grey);
+          border-bottom: 3px solid var(--grey);
+        }
+      }
+    }
   }
-}

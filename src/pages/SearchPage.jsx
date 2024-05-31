@@ -67,97 +67,98 @@ export default function SearchPage() {
 
   return (
     <>
-      <div id="map">
-        {loading && <div className="loadingContainer">Loading...</div>}
-      </div>
+      <div className="search-container">
+        <div id="map">
+          {loading && <div className="loadingContainer">Loading...</div>}
+        </div>
 
-      <div className="searchMenu">
-        <div className="searchinputs">
-          <div className="radiusElement">
-            <h3>Radius</h3>
+        <div className="searchMenu">
+          <div className="searchinputs">
+            <div className="radiusElement">
+              <h3>Radius</h3>
+              <input
+                type="range"
+                name="slider"
+                id="slider"
+                min={2}
+                max={15}
+                value={radius}
+                onChange={handleRadiusChange}
+              />
+              <h4>{radius} km</h4>
+            </div>
+          </div>
+
+          <div className="filterSearch">
+            <input type="checkbox" name="all" id="allBox" className="checkbox" />
+            All
+            <input type="checkbox" name="all" id="cafeBox" className="checkbox" />
+            Cafe
             <input
-              type="range"
-              name="slider"
-              id="slider"
-              min={2}
-              max={15}
-              value={radius}
-              onChange={handleRadiusChange}
+              type="checkbox"
+              name="all"
+              id="restaurantBox"
+              className="checkbox"
             />
-            <h4>{radius} km</h4>
+            Restaurant
+            <input type="checkbox" name="all" id="fastBox" className="checkbox" />
+            Fast Food
+            <input type="checkbox" name="all" id="barBox" className="checkbox" />
+            Bars & Pubs
+            <input
+              type="checkbox"
+              name="all"
+              id="dessertBox"
+              className="checkbox"
+            />
+            Dessert
           </div>
         </div>
+        <section id="displayResults">
+          {/* CAFE COMPONENTS */}
+          {cafes.length > 0 && <h2 className="display-title">Cafes</h2>}
+          <div className="foodVenueContainer">
+            {cafes.length > 0 &&
+              cafes.map((cafe, index) => (
+                <FoodVenueItem key={index} props={cafe} />
+              ))}
+          </div>
 
-        <div className="filterSearch">
-          <input type="checkbox" name="all" id="allBox" className="checkbox" />
-          All
-          <input type="checkbox" name="all" id="cafeBox" className="checkbox" />
-          Cafe
-          <input
-            type="checkbox"
-            name="all"
-            id="restaurantBox"
-            className="checkbox"
-          />
-          Restaurant
-          <input type="checkbox" name="all" id="fastBox" className="checkbox" />
-          Fast Food
-          <input type="checkbox" name="all" id="barBox" className="checkbox" />
-          Bars & Pubs
-          <input
-            type="checkbox"
-            name="all"
-            id="dessertBox"
-            className="checkbox"
-          />
-          Dessert
-        </div>
+          {/* RESTAURANT COMPONENTS */}
+          {restaurants.length > 0 && <h2 className="display-title">Restaurants</h2>}
+          <div className="foodVenueContainer">
+            {restaurants.length > 0 &&
+              restaurants.map((restaurant, index) => (
+                <FoodVenueItem key={index} props={restaurant} />
+              ))}
+          </div>
+
+          {/* BARS COMPONENTS */}
+          {bars.length > 0 && <h2 className="display-title">Bars & Pubs</h2>}
+          <div className="barsontainer">
+            {bars.length > 0 &&
+              bars.map((bar, index) => <FoodVenueItem key={index} props={bar} />)}
+          </div>
+
+          {/* FAST FOOD COMPONENTS */}
+          {fastfoods.length > 0 && <h2 className="display-title">Fast Food</h2>}
+          <div className="foodVenueContainer">
+            {fastfoods.length > 0 &&
+              fastfoods.map((fastfood, index) => (
+                <FoodVenueItem key={index} props={fastfood} />
+              ))}
+          </div>
+
+          {/* DESSERT COMPONENTS */}
+          {desserts.length > 0 && <h2 className="display-title">Desserts</h2>}
+          <div className="foodVenueContainer">
+            {desserts.length > 0 &&
+              desserts.map((dessert, index) => (
+                <FoodVenueItem key={index} props={dessert} />
+              ))}
+            </div>
+        </section>
       </div>
-
-      <section id="displayResults">
-        {/* CAFE COMPONENTS */}
-        {cafes.length > 0 && <h2>Cafes</h2>}
-        <div className="foodVenueContainer">
-          {cafes.length > 0 &&
-            cafes.map((cafe, index) => (
-              <FoodVenueItem key={index} props={cafe} />
-            ))}
-        </div>
-
-        {/* RESTAURANT COMPONENTS */}
-        {restaurants.length > 0 && <h2>Restaurants</h2>}
-        <div className="foodVenueContainer">
-          {restaurants.length > 0 &&
-            restaurants.map((restaurant, index) => (
-              <FoodVenueItem key={index} props={restaurant} />
-            ))}
-        </div>
-
-        {/* BARS COMPONENTS */}
-        {bars.length > 0 && <h2>Bars & Pubs</h2>}
-        <div className="barsontainer">
-          {bars.length > 0 &&
-            bars.map((bar, index) => <FoodVenueItem key={index} props={bar} />)}
-        </div>
-
-        {/* FAST FOOD COMPONENTS */}
-        {fastfoods.length > 0 && <h2>Fast Food</h2>}
-        <div className="foodVenueContainer">
-          {fastfoods.length > 0 &&
-            fastfoods.map((fastfood, index) => (
-              <FoodVenueItem key={index} props={fastfood} />
-            ))}
-        </div>
-
-        {/* DESSERT COMPONENTS */}
-        {desserts.length > 0 && <h2>Desserts</h2>}
-        <div className="foodVenueContainer">
-          {desserts.length > 0 &&
-            desserts.map((dessert, index) => (
-              <FoodVenueItem key={index} props={dessert} />
-            ))}
-        </div>
-      </section>
     </>
   );
 }
