@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import fetchMapData from "../functions/fetchMapData";
 import "maplibre-gl/dist/maplibre-gl.css";
 import "../styles/SearchPage.css";
