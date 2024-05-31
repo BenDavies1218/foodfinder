@@ -11,7 +11,7 @@ export default function HomePage() {
 
   // GET THE USERS EXACT LOCATION AND SET TO STATE
   function handleGetExactLocation() {
-    if (navigator.geolocation && window.innerWidth < 600) {
+    if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
