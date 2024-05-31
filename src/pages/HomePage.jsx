@@ -70,7 +70,8 @@ export default function HomePage() {
 
         {/* Link to navigate to the search page */}
         {/* Button to trigger the search */}
-        <Link to={"/search"}>
+
+        <Link to="/search">
           <button
             className="main-search-button"
             onClick={handleGetExactLocation}
