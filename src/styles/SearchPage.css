@@ -4,8 +4,21 @@
     margin: 0;
     padding: 0;
 
-    .search-container {
+    .loadingContainer {
       display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      width: 100%;
+      z-index: 1;
+
+      .loading-text {
+        font-family: 'Roboto', 'Helvetica Neue', sans-serif;
+        font-weight: 900;
+        font-size: 3em;
+        color: var(--orange);
+      }
+    }
 
       #map {
         position: absolute;
@@ -27,6 +40,7 @@
         font-size: 1rem;
         background-color: var(--black);
         color: var(--white);
+        z-index: -1;
 
         .searchinputs {
           padding: 5% 5% 2% 5%;
@@ -34,6 +48,33 @@
           .radiusElement {
             display: flex;
             flex-direction: row;
+
+            .favouriteLink {
+              margin: 0% 20%;
+              padding: 0 18px;
+              line-height: 40px;
+              text-align: center;
+              width: fit-content;
+              height: auto;
+              background-color: var(--black);
+              border: 2px solid var(--orange);
+              border-radius: 30px;
+              color: var(--orange);
+              cursor: pointer;
+              font-family: 'Roboto', 'Helvetica Neue', sans-serif;
+              font-weight: 300;
+              font-size: 1em;
+            }
+
+            .favouriteLink:hover {
+              background-color: var(--orange);
+              color: var(--white);
+              font-weight: 600;
+            }
+
+            .favouriteLink:active {
+              transform: translate(0, 2px);
+            }
 
             h3 {
               padding-right: 5%;
@@ -79,6 +120,11 @@
           border-top: 3px solid var(--grey);
           border-bottom: 3px solid var(--grey);
         }
+
+        .barsontainer {
+          padding: 5%;
+          border-top: 3px solid var(--grey);
+          border-bottom: 3px solid var(--grey);
+        }
       }
     }
-  }

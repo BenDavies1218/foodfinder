@@ -11,12 +11,11 @@ export default function HomePage() {
 
   // GET THE USERS EXACT LOCATION AND SET TO STATE
   function handleGetExactLocation() {
-    if (navigator.geolocation && window.innerWidth < 600) {
+    if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
           setCurrentSearch({ latitude, longitude });
-          console.log("Exact position found");
           redirect("/search");
         },
         (error) => {
@@ -26,13 +25,11 @@ export default function HomePage() {
         }
       );
     } else {
-      console.log("Geolocation or you are on a desktop");
-      // Handle error or use fallback method (e.g., API call)
       fetchLocationFromAPI();
     }
   }
 
-  // Function to fetch location from API if geolocation is denied or not supported
+  // FALLBACK FUNCTION TO FETCH USER LOCATION FROM API IF BROWSER GEOLOCATION ISN'T AVAILABLE
   function fetchLocationFromAPI() {
     const myAPIKey = import.meta.env.VITE_GEOAPIFY_API_KEY;
     const startLocation = `https://api.geoapify.com/v1/ipinfo?apiKey=${myAPIKey}`;
@@ -43,6 +40,7 @@ export default function HomePage() {
         console.log(data);
         const { latitude, longitude } = data.location;
         setCurrentSearch({ latitude, longitude });
+        // REDIRECT AFTER SETTING THE STATE
         redirect("/search");
       })
       .catch((error) => {
@@ -50,6 +48,7 @@ export default function HomePage() {
       });
   }
 
+  // EFFECT FOR BACKGOUND
   useEffect(() => {
     // Calling the parallax function to initialize the parallax effect
     parallax();
