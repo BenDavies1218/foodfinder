@@ -29,7 +29,7 @@ export default function FavouritePage() {
       <div className="row">
         <div className="fav-container">
           <h1 className="fav-title">Favourites</h1>
-          <div className="favouriteItemContainer">
+          <div className="fav-items-container">
             {localStorageItems.length > 1
               ? localStorageItems.map((item, index) => (
                   <FoodFavouritesItems key={index} props={item} />

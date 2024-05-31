@@ -32,9 +32,9 @@ export default function FoodFavouriteItems({ props }) {
         {key !== "currentSearch" ? (
           <>
             <h5 className="fav-item-title">{key}</h5>
-            <div>
-              <p>{value.address}</p>
-              <p>Distance Away: {value.distance / 1000} km</p>
+            <div className="fav-item-info">
+              <p className="fav-item-address">{value.address}</p>
+              <p className="fav-item-distance">Distance Away: {value.distance / 1000} km</p>
               {favouriteIcon ? (
                 <i
                   className="fa-solid fa-heart"
