@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import '../styles/FavouritesPage.css'
 
 export default function FoodFavouriteItems({ props }) {
   // STATE FOR THE FAVOURITE ICON
@@ -26,11 +27,11 @@ export default function FoodFavouriteItems({ props }) {
 
   return (
     <div>
-      <div className="container">
+      <div className="fav-item-container">
         {/* BECAUSE WE GRAB ALL OF THE LOCAL STORAGE WE NEED TO NOT RENDER THE CURRENTSEARCH CONTEXT */}
         {key !== "currentSearch" ? (
           <>
-            <h5>{key}</h5>
+            <h5 className="fav-item-title">{key}</h5>
             <div>
               <p>{value.address}</p>
               <p>Distance Away: {value.distance / 1000} km</p>
