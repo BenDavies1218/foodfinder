@@ -20,58 +20,50 @@ export default function SearchPage() {
   const [radius, setRadius] = useState(5);
 
   // STATE FOR USER LOCATION
-  const [userLocation, setUserLocation] = useState(null);
-
-  setUserLocation(JSON.parse(localStorage.getItem("currentSearch")));
-
+  const storedLocation = JSON.parse(localStorage.getItem("currentSearch"));
   // UPDATE THE RADIUS STATE
   const handleRadiusChange = (event) => {
     setRadius(parseInt(event.target.value));
   };
 
   useEffect(() => {
-    // Check if userLocation is available
-    if (userLocation) {
-      // API KEY IMPORT
-      const myAPIKey = import.meta.env.VITE_GEOAPIFY_API_KEY;
+    // API KEY IMPORT
+    const myAPIKey = import.meta.env.VITE_GEOAPIFY_API_KEY;
 
-      // API URL REQUEST TO GEOAPIFY
-      const placesUrl = `https://api.geoapify.com/v2/places?categories=catering&filter=circle:${
-        userLocation.longitude
-      },${userLocation.latitude},${radius * 1000}&bias=proximity:${
-        userLocation.longitude + 0.1
-      },${userLocation.latitude}&limit=200&apiKey=${myAPIKey}`;
+    // API URL REQUEST TO GEOAPIFY
+    const placesUrl = `https://api.geoapify.com/v2/places?categories=catering&filter=circle:${
+      storedLocation.longitude
+    },${storedLocation.latitude},${radius * 1000}&bias=proximity:${
+      storedLocation.longitude + 0.1
+    },${storedLocation.latitude}&limit=50&apiKey=${myAPIKey}`;
 
-      // FETCHING PLACES
-      fetch(placesUrl)
-        // Convert response to JSON
-        .then((response) => response.json())
+    // FETCHING PLACES
+    fetch(placesUrl)
+      // Convert response to JSON
+      .then((response) => response.json())
 
-        // Call functions With JSON Data
-        .then((places) => {
-          fetchMapData(places, userLocation);
-          // Remove Loading screen
-          setLoading(false);
+      // Call functions With JSON Data
+      .then((places) => {
+        fetchMapData(places, storedLocation);
+        // Remove Loading screen
+        setLoading(false);
 
-          // I PUT THE SORTING IN ANOTHER MODULE BECAUSE IT WAS TAKING UP TOO MUCH SPACE
-          let { cafes, restaurants, bars, fastFoods, desserts } =
-            sortFilterResponseData(places);
+        // I PUT THE SORTING IN ANOTHER MODULE BECAUSE IT WAS TAKING UP TOO MUCH SPACE
+        let { cafes, restaurants, bars, fastFoods, desserts } =
+          sortFilterResponseData(places);
 
-          // SET THE STATE TO THE SORTED DATA
-          setCafes(cafes);
-          setRestaurants(restaurants);
-          setBars(bars);
-          setFastFoods(fastFoods);
-          setDesserts(desserts);
-        })
-        // HANDLE ANY ERRORS THAT COME OUR WAY
-        .catch((error) => {
-          console.error("An error occurred while fetching places:", error);
-        });
-
-      console.log("radius changed");
-    }
-  }, [userLocation, radius]);
+        // SET THE STATE TO THE SORTED DATA
+        setCafes(cafes);
+        setRestaurants(restaurants);
+        setBars(bars);
+        setFastFoods(fastFoods);
+        setDesserts(desserts);
+      })
+      // HANDLE ANY ERRORS THAT COME OUR WAY
+      .catch((error) => {
+        console.error("An error occurred while fetching places:", error);
+      });
+  }, []); // Depend on radius and firstRender
 
   return (
     <>
