@@ -1,0 +1,105 @@
+@import url(_variables.css);
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+/* Styling for the background image container */
+.image-background {
+    background-image: url(../assets/cafe.jpg);
+    background-size: 110%, cover, cover;
+    background-position: center, top, bottom;
+    background-repeat: no-repeat;
+    filter: grayscale(100);
+    z-index: -2;
+
+    .image-background-overlay {
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        background-color: var(--black);
+        opacity: 95%;
+        z-index: -1;
+    }
+}
+
+/* Styling for the main content container */
+.row {
+    position: absolute;
+    top: 0%;
+    bottom: 0%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    line-height: 150px;
+    width: 100%;
+    height: auto;
+    z-index: 1;
+
+    .fav-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 75%;
+        width: 75%;
+        background-color: var(--black);
+        border-radius: 30px;
+
+        .fav-title {
+            font-family: 'Roboto', 'Helvetica Neue', sans-serif;
+            font-weight: 900;
+            font-size: 7em;
+            color: var(--orange);
+            padding: 2%;
+        }
+
+        .fav-items-container {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: space-evenly;
+            align-items: baseline;
+            overflow-y: scroll;
+            
+            .fav-item-container {
+                width: 100%;
+                height: auto;
+                display: flex;
+                flex-direction: column;
+                background-color: var(--black);
+                line-height: 30px;
+                border: 3px solid var(--grey);
+                border-radius: 30px;
+                margin-top: 5%;
+
+                .fav-item-title {
+                    font-family: 'Roboto', 'Helvetica Neue', sans-serif;
+                    font-weight: 900;
+                    font-size: 1.5rem;
+                    padding: 5%;
+                    color: var(--orange);
+                }
+
+                .fav-item-info {
+                    display: flex;
+                    flex-direction: column;
+                    font-family: 'Roboto', 'Helvetica Neue', sans-serif;
+                    font-weight: 300;
+                    font-size: 1rem;
+                    padding:0 5% 0 5%;
+                    color: var(--grey);
+
+                    i {
+                        padding: 5%;
+                        align-self: end;
+                    }
+                }
+            }
+        }
+    }
+}

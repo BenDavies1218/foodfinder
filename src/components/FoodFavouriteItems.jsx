@@ -26,14 +26,14 @@ export default function FoodFavouriteItems({ props }) {
 
   return (
     <div>
-      <div className="container">
+      <div className="fav-item-container">
         {/* BECAUSE WE GRAB ALL OF THE LOCAL STORAGE WE NEED TO NOT RENDER THE CURRENTSEARCH CONTEXT */}
         {key !== "currentSearch" ? (
           <>
-            <h5>{key}</h5>
-            <div>
-              <p>{value.address}</p>
-              <p>Distance Away: {value.distance / 1000} km</p>
+            <h5 className="fav-item-title">{key}</h5>
+            <div className="fav-item-info">
+              <p className="fav-item-address">{value.address}</p>
+              <p className="fav-item-distance">Distance Away: {value.distance / 1000} km</p>
               {favouriteIcon ? (
                 <i
                   className="fa-solid fa-heart"
