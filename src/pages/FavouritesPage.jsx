@@ -1,7 +1,7 @@
-import  { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import FoodFavouritesItems from "../components/FoodFavouriteItems";
 import { Link } from "react-router-dom";
-import '../styles/FavouritesPage.css'
+import "../styles/FavouritesPage.css";
 
 export default function FavouritePage() {
   const [localStorageItems, setLocalStorageItems] = useState([]);
@@ -13,8 +13,10 @@ export default function FavouritePage() {
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i);
       const value = JSON.parse(localStorage.getItem(key));
-      items.push({ key, value });
+      if (key != "currentSearch") items.push({ key, value });
+      console.log(key);
     }
+    console.log(items);
 
     setLocalStorageItems(items);
   }, []);
@@ -27,7 +29,7 @@ export default function FavouritePage() {
         <div className="image-background-overlay"></div>
       </div>
       <Link to={"/search"} className="searchLink">
-              Back
+        Back
       </Link>
       <div className="row">
         <div className="fav-container">
