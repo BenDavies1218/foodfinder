@@ -4,6 +4,7 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import "../styles/SearchPage.css";
 import FoodVenueItem from "../components/FoodVenueItem";
 import sortFilterResponseData from "../functions/sortFilterResponseData";
+import { Link } from "react-router-dom";
 
 export default function SearchPage() {
   // STATE FOR Loading Div over the Map Element
@@ -154,11 +155,11 @@ export default function SearchPage() {
   return (
     <>
       <div id="map">
-        {loading && <div className="loadingContainer">
-          <p className="loading-text">
-            Loading...
-          </p>  
-        </div>}
+        {loading && (
+          <div className="loadingContainer">
+            <p className="loading-text">Loading...</p>
+          </div>
+        )}
       </div>
       <div className="searchMenu">
         <div className="searchinputs">
@@ -174,6 +175,9 @@ export default function SearchPage() {
               onChange={handleRadiusChange}
             />
             <h4>{radius} km</h4>
+            <Link to={"/favourites"} className="favouriteLink">
+              Favourites
+            </Link>
           </div>
         </div>
 
