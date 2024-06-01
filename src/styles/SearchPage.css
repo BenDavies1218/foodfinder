@@ -50,8 +50,8 @@
             flex-direction: row;
 
             .favouriteLink {
-              margin: 0% 20%;
-              padding: 0 18px;
+              margin: 0 0 0 20%;
+              padding: 0 15px;
               line-height: 40px;
               text-align: center;
               width: fit-content;
@@ -64,6 +64,7 @@
               font-family: 'Roboto', 'Helvetica Neue', sans-serif;
               font-weight: 300;
               font-size: 1em;
+              text-decoration: none;
             }
 
             .favouriteLink:hover {

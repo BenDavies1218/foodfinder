@@ -1,5 +1,6 @@
 import  { useEffect, useState } from "react";
 import FoodFavouritesItems from "../components/FoodFavouriteItems";
+import { Link } from "react-router-dom";
 import '../styles/FavouritesPage.css'
 
 export default function FavouritePage() {
@@ -25,6 +26,9 @@ export default function FavouritePage() {
         {/* Overlay for the background image */}
         <div className="image-background-overlay"></div>
       </div>
+      <Link to={"/search"} className="searchLink">
+              Back
+      </Link>
       <div className="row">
         <div className="fav-container">
           <h1 className="fav-title">Favourites</h1>

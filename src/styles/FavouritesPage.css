@@ -27,6 +27,38 @@
     }
 }
 
+.searchLink {
+    position: absolute;
+    top: 5%;
+    left: 0%;
+    margin: 0 0 0 2.5%;
+    padding: 0 2.5%;
+    line-height: 40px;
+    text-align: center;
+    width: fit-content;
+    height: auto;
+    background-color: var(--black);
+    border: 2px solid var(--orange);
+    border-radius: 30px;
+    color: var(--orange);
+    cursor: pointer;
+    font-family: 'Roboto', 'Helvetica Neue', sans-serif;
+    font-weight: 300;
+    font-size: 1em;
+    text-decoration: none;
+    z-index: 2;
+  }
+
+  .searchLink:hover {
+    background-color: var(--orange);
+    color: var(--white);
+    font-weight: 600;
+  }
+
+  .searchLink:active {
+    transform: translate(0, 2px);
+  }
+
 /* Styling for the main content container */
 .row {
     position: absolute;
@@ -59,15 +91,15 @@
         }
 
         .fav-items-container {
+            width: 100%;
             display: flex;
             flex-direction: row;
             flex-wrap: wrap;
             justify-content: space-evenly;
-            align-items: baseline;
             overflow-y: scroll;
             
             .fav-item-container {
-                width: 100%;
+                width: 25%;
                 height: auto;
                 display: flex;
                 flex-direction: column;

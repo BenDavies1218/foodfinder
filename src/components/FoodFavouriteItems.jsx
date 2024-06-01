@@ -25,7 +25,6 @@ export default function FoodFavouriteItems({ props }) {
   };
 
   return (
-    <div>
       <div className="fav-item-container">
         {/* BECAUSE WE GRAB ALL OF THE LOCAL STORAGE WE NEED TO NOT RENDER THE CURRENTSEARCH CONTEXT */}
         {key !== "currentSearch" ? (
@@ -51,6 +50,5 @@ export default function FoodFavouriteItems({ props }) {
           </>
         ) : null}
       </div>
-    </div>
   );
 }
