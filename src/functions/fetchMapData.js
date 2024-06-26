@@ -6,8 +6,6 @@ export default function fetchMapData(places, userLocation) {
   // API KEY IMPORT
   const apiKey = import.meta.env.VITE_GEOAPIFY_API_KEY;
 
-  console.log(userLocation);
-
   // POSITION OF THE MAP'S CORNERS USING LONGITUDE AND LATITUDE
   const bounds = {
     lat1: userLocation.latitude - 0.2,

@@ -27,7 +27,7 @@ export default function SearchPage() {
   });
 
   // RADIUS SLIDER STATE
-  const [radius, setRadius] = useState(2);
+  const [radius, setRadius] = useState(15);
 
   // USER LOCATION
   const [storedLocation, setStoredLocation] = useState(null);
@@ -38,12 +38,20 @@ export default function SearchPage() {
   };
 
   useEffect(() => {
-    // FETCH DATA USERLOCATION FROM LOCAL STORAGE
-    const storedLocationData = JSON.parse(
-      localStorage.getItem("currentSearch")
-    );
-    // SET USER LOCATION TO STATE I DID THIS SO THAT IN THE FUTURE IS WE WANT TO ALLOW TO SEARCHES IN DIFFERENT LOCATIONS IT'S POSSIBLE
-    setStoredLocation(storedLocationData);
+    // Function to fetch stored location after a delay
+    const fetchStoredLocation = () => {
+      const storedLocationData = JSON.parse(
+        localStorage.getItem("currentSearch")
+      );
+      setStoredLocation(storedLocationData);
+    };
+
+    // Delay fetching stored location by 500 milliseconds because for some reason it cant read the value straight away
+    const delay = 500;
+    const timeoutId = setTimeout(fetchStoredLocation, delay);
+
+    // Clean up timeout to prevent memory leaks
+    return () => clearTimeout(timeoutId);
   }, []);
 
   useEffect(() => {
@@ -51,9 +59,6 @@ export default function SearchPage() {
     if (storedLocation) {
       // DECLARE API KEY
       const myAPIKey = import.meta.env.VITE_GEOAPIFY_API_KEY;
-
-      // DECLARE THE LAT AND LONG OF THE USER
-      const { latitude, longitude } = storedLocation;
 
       // DECLARE THE FILTER OPTIONS
       let searchFilters = {
@@ -76,12 +81,14 @@ export default function SearchPage() {
       // JOIN THE STRING WITH A COMMA AND FILTER OUT WORDS THAT DONT EXIST
       let searchString = strings.filter((str) => str !== "").join(",");
 
-      // SEND REQUEST TO API
+      // DECLARE THE LAT AND LONG OF THE USER
+      const { latitude, longitude } = storedLocation;
+
       const placesUrl = `https://api.geoapify.com/v2/places?categories=${searchString}&filter=circle:${longitude},${latitude},${
         radius * 1000
-      }&bias=proximity:${longitude},${latitude}&limit=50&apiKey=${myAPIKey}`;
+      }&limit=50&apiKey=${myAPIKey}`;
 
-      // FETCHING.....
+      // FETCHING
       fetch(placesUrl)
         // CONVERT RESPONSE TO JSON
         .then((response) => response.json())
@@ -110,13 +117,11 @@ export default function SearchPage() {
           console.error("An error occurred while fetching places:", error);
         });
     }
-    // DEPENDANCY ARRAY
+    // DEPENDENCY ARRAY
   }, [storedLocation, radius, filterMenu]);
 
   /**
    * FUNCTION TO HANDLE THE FILTER OPTIONS
-   * @author Benjamin Davies
-   *
    * @param {*} filter
    */
   function handleFilterChange(filter) {
@@ -157,7 +162,11 @@ export default function SearchPage() {
       <div id="map">
         {loading && (
           <div className="loadingContainer">
-            <p className="loading-text">Loading...</p>
+            <p className="loading-text">
+              Loading<span id="1">.</span>
+              <span id="2">.</span>
+              <span id="3">.</span>
+            </p>
           </div>
         )}
       </div>

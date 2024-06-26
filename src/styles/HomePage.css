@@ -43,6 +43,14 @@
     height: auto;
     z-index: 1;
 
+    /* Styling for search input*/
+    .geocoder-container {
+        min-width: 50%;
+        input {
+            text-align: center;
+        }
+    }
+
     /* Styling for the main title */
     .main-title {
         font-family: 'Roboto', 'Helvetica Neue', sans-serif;

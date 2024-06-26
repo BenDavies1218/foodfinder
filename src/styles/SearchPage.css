@@ -17,6 +17,10 @@
         font-weight: 900;
         font-size: 3em;
         color: var(--orange);
+        span {
+          opacity: 0;
+          animation: dot-animation 1.5s infinite;
+        }
       }
     }
 
@@ -127,5 +131,16 @@
           border-top: 3px solid var(--grey);
           border-bottom: 3px solid var(--grey);
         }
+      }
+    }
+    @keyframes dot-animation {
+      0% {
+        opacity: 0;
+      }
+      50% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
       }
     }

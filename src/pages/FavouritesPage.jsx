@@ -14,9 +14,7 @@ export default function FavouritePage() {
       const key = localStorage.key(i);
       const value = JSON.parse(localStorage.getItem(key));
       if (key != "currentSearch") items.push({ key, value });
-      console.log(key);
     }
-    console.log(items);
 
     setLocalStorageItems(items);
   }, []);

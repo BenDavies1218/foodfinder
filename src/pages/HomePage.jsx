@@ -1,9 +1,9 @@
+import { useEffect } from "react";
+import { useCurrentSearchGlobalDispatch } from "../contexts/currentSearchData";
 import { Link, redirect } from "react-router-dom";
 import parallax from "../functions/parallaxEffect";
 import "../styles/HomePage.css";
-
-import { useEffect } from "react";
-import { useCurrentSearchGlobalDispatch } from "../contexts/currentSearchData";
+import AutoFinish from "../components/AutoFinish";
 
 export default function HomePage() {
   // Fetch user Location and save to Context
@@ -11,21 +11,28 @@ export default function HomePage() {
 
   // GET THE USERS EXACT LOCATION AND SET TO STATE
   function handleGetExactLocation() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          setCurrentSearch({ latitude, longitude });
-          redirect("/search");
-        },
-        (error) => {
-          console.error("Error getting location:", error);
-          // IF THERES AN ERROR FALLBACK TO API CALL
-          fetchLocationFromAPI();
-        }
-      );
+    setCurrentSearch({});
+    let storedCoordinates = JSON.parse(localStorage.getItem("searchBox"));
+    if (storedCoordinates) {
+      const [longitude, latitude] = storedCoordinates;
+      setCurrentSearch({ latitude, longitude });
     } else {
-      fetchLocationFromAPI();
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const { latitude, longitude } = position.coords;
+            setCurrentSearch({ latitude, longitude });
+            redirect("/search");
+          },
+          (error) => {
+            console.error("Error getting location:", error);
+            // IF THERES AN ERROR FALLBACK TO API CALL
+            fetchLocationFromAPI();
+          }
+        );
+      } else {
+        fetchLocationFromAPI();
+      }
     }
   }
 
@@ -37,7 +44,6 @@ export default function HomePage() {
     fetch(startLocation)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         const { latitude, longitude } = data.location;
         setCurrentSearch({ latitude, longitude });
         // REDIRECT AFTER SETTING THE STATE
@@ -52,6 +58,7 @@ export default function HomePage() {
   useEffect(() => {
     // Calling the parallax function to initialize the parallax effect
     parallax();
+    localStorage.clear();
   }, []);
 
   return (
@@ -69,7 +76,7 @@ export default function HomePage() {
 
         {/* Link to navigate to the search page */}
         {/* Button to trigger the search */}
-
+        <AutoFinish />
         <Link to="/search">
           <button
             className="main-search-button"

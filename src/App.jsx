@@ -1,5 +1,4 @@
 import { Route, Routes } from "react-router-dom";
-// import Template from "./pages/_TemplatePage";
 import HomePage from "./pages/HomePage";
 import SearchPage from "./pages/SearchPage";
 import FavouritesPage from "./pages/FavouritesPage";
