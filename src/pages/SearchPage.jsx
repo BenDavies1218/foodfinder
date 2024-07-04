@@ -46,7 +46,7 @@ export default function SearchPage() {
       setStoredLocation(storedLocationData);
     };
 
-    // Delay fetching stored location by 500 milliseconds because for some reason it cant read the value straight away
+    // Delay fetching stored location by 500 milliseconds because it takes time to read from local storage. I need to fix this bug
     const delay = 500;
     const timeoutId = setTimeout(fetchStoredLocation, delay);
 

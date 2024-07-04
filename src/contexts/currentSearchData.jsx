@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useEffect, useState } from "react";
 import { useLocalStorage } from "react-use";
 
@@ -12,6 +13,7 @@ export function useCurrentSearchGlobalDispatch() {
   return useContext(CurrentSearchGlobalDispatchContext);
 }
 
+// eslint-disable-next-line react/prop-types
 export function CurrentSearchProvider({ children }) {
   // Initialize useLocalStorage with a key and an initial value
   let [currentSearchLocalStorage, setCurrentSearchLocalStorage] =
